@@ -1,0 +1,22 @@
+body {
+  font-family: system-ui, sans-serif;
+  color: #1f2937;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+h1 {
+  color: #c2410c;
+}
+
+[role="status"] {
+  color: #6b7280;
+}
+
+button {
+  color: white;
+  background: #c2410c;
+  border: none;
+  padding: 0.4rem 0.9rem;
+}
