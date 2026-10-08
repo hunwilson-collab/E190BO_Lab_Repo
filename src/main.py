@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict, Field as PydanticField
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
@@ -43,3 +43,13 @@ def create_idea(payload: IdeaCreate):
         s.commit()
         s.refresh(idea)
         return idea
+
+
+@app.get("/ideas/{idea_id}")
+def get_idea(idea_id: int):
+    with Session(engine) as s:
+        idea = s.get(Idea, idea_id)
+        if idea is None:
+            raise HTTPException(404, "no such idea")
+        # No votes table yet, so the votes list is always empty for now.
+        return {**idea.model_dump(), "votes": []}
