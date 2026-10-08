@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict, Field as PydanticField
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from sqlmodel import Field, Session, SQLModel, create_engine, func, select
 
 
 class Idea(SQLModel, table=True):
@@ -45,8 +45,13 @@ app = FastAPI()
 def list_ideas():
     with Session(engine) as s:
         ideas = s.exec(select(Idea)).all()
-        # No votes table yet, so every idea has 0 votes for now.
-        return [{**idea.model_dump(), "vote_count": 0} for idea in ideas]
+        result = []
+        for idea in ideas:
+            # One COUNT query per idea. Simple, but it's one extra query for
+            # every idea on the board (a single LEFT JOIN would do it in one).
+            n = s.exec(select(func.count(Vote.id)).where(Vote.idea_id == idea.id)).one()
+            result.append({**idea.model_dump(), "vote_count": n})
+        return result
 
 
 @app.post("/ideas", status_code=201)
@@ -66,7 +71,7 @@ def get_idea(idea_id: int):
         if idea is None:
             raise HTTPException(404, "no such idea")
         votes = s.exec(select(Vote).where(Vote.idea_id == idea_id)).all()
-        return {**idea.model_dump(), "votes": votes}
+        return {**idea.model_dump(), "votes": votes, "vote_count": len(votes)}
 
 
 @app.post("/ideas/{idea_id}/vote", status_code=201)
