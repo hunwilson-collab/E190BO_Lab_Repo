@@ -6,7 +6,7 @@
 # list lives in memory, every restart (including --reload) starts it over.
 #
 # Run it from this folder:  uvicorn main:app --reload
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from sqlmodel import SQLModel
 from fastapi.staticfiles import StaticFiles
 
@@ -25,6 +25,7 @@ class IdeaCreate(SQLModel):        # what a client may send: no id
 
 @app.get("/ideas")
 def list_ideas():
+    raise HTTPException(500)
     return ideas
 
 

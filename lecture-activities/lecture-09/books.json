@@ -1,0 +1,6 @@
+[
+  {"title": "A Wizard of Earthsea", "author": {"first": "Ursula", "last": "Le Guin"}, "pages": 183, "copies": 3, "checkedOut": 3},
+  {"title": "The Dispossessed", "author": {"first": "Ursula", "last": "Le Guin"}, "pages": 387, "copies": 2, "checkedOut": 1},
+  {"title": "Kindred", "author": {"first": "Octavia", "last": "Butler"}, "pages": 264, "copies": 4, "checkedOut": 4},
+  {"title": "Exhalation", "author": {"first": "Ted", "last": "Chiang"}, "pages": 350, "copies": 2, "checkedOut": 0}
+]
