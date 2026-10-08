@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict, Field as PydanticField
+from sqlalchemy import UniqueConstraint
 from sqlmodel import Field, Session, SQLModel, create_engine, func, select
 
 
@@ -13,7 +14,10 @@ class Idea(SQLModel, table=True):
 
 
 # One row per vote. idea_id points back at the idea it's for.
+# The unique constraint means one vote per voter per idea, enforced by the DB.
 class Vote(SQLModel, table=True):
+    __table_args__ = (UniqueConstraint("idea_id", "voter"),)
+
     id: int | None = Field(default=None, primary_key=True)
     idea_id: int = Field(foreign_key="idea.id")
     voter: str
@@ -80,6 +84,11 @@ def vote(idea_id: int, payload: VoteCreate):
         # Check the idea exists first, so a vote on a missing idea is a 404.
         if s.get(Idea, idea_id) is None:
             raise HTTPException(404, "no such idea")
+        already = s.exec(
+            select(Vote).where(Vote.idea_id == idea_id, Vote.voter == payload.voter)
+        ).first()
+        if already is not None:
+            raise HTTPException(409, "already voted for this idea")
         v = Vote(idea_id=idea_id, voter=payload.voter)
         s.add(v)
         s.commit()
