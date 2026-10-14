@@ -1,0 +1,5 @@
+# What the running app needs, and nothing it doesn't.
+fastapi==0.141.1
+uvicorn[standard]==0.53.0
+sqlmodel==0.0.42
+psycopg[binary]==3.3.6
