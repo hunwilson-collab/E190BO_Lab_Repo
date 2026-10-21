@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from sqlmodel import SQLModel, Field, Session, create_engine, func, select
 
 class Idea(SQLModel, table=True):
@@ -68,3 +69,7 @@ def vote(idea_id: int, payload: VoteCreate):
         vote = Vote(idea_id=idea_id, **payload.model_dump())
         s.add(vote); s.commit(); s.refresh(vote)
         return vote
+
+# Serve web/ at /. This has to stay last: a mount at "/" matches every path,
+# so any route declared after it would never be reached.
+app.mount("/", StaticFiles(directory="web", html=True), name="web")
