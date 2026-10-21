@@ -1,0 +1,7 @@
+# What stays out of the image. Every pattern starts with **/ so it also
+# matches inside src/: in a .dockerignore, a bare *.db only matches at the
+# top of the repo, and your app.db is one folder down.
+**/*.db
+**/.env
+**/__pycache__
+.git
