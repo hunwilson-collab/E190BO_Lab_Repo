@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Idea board</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <h1>Idea board</h1>
+    <button id="theme-toggle" type="button" aria-pressed="false">Dark theme</button>
+  </header>
+
+  <main>
+    <section aria-labelledby="add-heading">
+      <h2 id="add-heading">Add an idea</h2>
+      <form id="add-form">
+        <label for="title">Title</label>
+        <input id="title" name="title" required maxlength="200">
+
+        <label for="body">Details <span class="hint">(optional)</span></label>
+        <textarea id="body" name="body" rows="3"></textarea>
+
+        <button id="add-button">Add idea</button>
+        <p id="add-status" role="status"></p>
+      </form>
+    </section>
+
+    <section aria-labelledby="ideas-heading">
+      <h2 id="ideas-heading">Ideas</h2>
+
+      <div class="voter">
+        <label for="voter">Your name, for voting</label>
+        <input id="voter" name="voter" autocomplete="nickname">
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <label for="search">Search</label>
+          <input id="search" type="search">
+        </div>
+        <div class="control">
+          <label for="sort">Sort by</label>
+          <select id="sort">
+            <option value="votes">Most votes</option>
+            <option value="newest">Newest</option>
+            <option value="title">Title, A to Z</option>
+          </select>
+        </div>
+      </div>
+
+      <p id="list-status" role="status"></p>
+      <p id="count" role="status"></p>
+      <ul id="ideas" aria-busy="false"></ul>
+    </section>
+  </main>
+</body>
+</html>
