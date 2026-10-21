@@ -1,0 +1,8 @@
+# What the running app needs, and nothing it doesn't: the Docker image
+# installs from this file. Your codespace installs from the template's
+# requirements.txt, which has these three and much more.
+#
+# Pins match the template's requirements.txt; check with `make check-lab-pins`.
+fastapi==0.141.1
+uvicorn[standard]==0.53.0
+sqlmodel==0.0.42
