@@ -3,12 +3,9 @@
   --ink: #1f2937;
   --muted: #4b5563;
   --bg: #ffffff;
-  --card: #f9fafb;
   --line: #d1d5db;
   --accent: #6d28d9;
   --accent-ink: #ffffff;
-  --top-bg: #fef3c7;
-  --top-line: #b45309;
   --error: #b91c1c;
   color-scheme: light;
 }
@@ -17,18 +14,11 @@
   --ink: #e5e7eb;
   --muted: #9ca3af;
   --bg: #111827;
-  --card: #1f2937;
   --line: #374151;
   --accent: #a78bfa;
   --accent-ink: #111827;
-  --top-bg: #3b2f12;
-  --top-line: #fbbf24;
   --error: #fca5a5;
   color-scheme: dark;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 body {
@@ -38,44 +28,23 @@ body {
   max-width: 42rem;
   margin: 0 auto;
   padding: 1rem;
-  line-height: 1.5;
-}
-
-.top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
+  overflow-wrap: anywhere;
 }
 
 h1 {
   color: var(--accent);
-  margin: 0.5rem 0;
 }
 
 label {
   display: block;
-  font-weight: 600;
   margin-top: 0.75rem;
 }
 
-.hint,
-[role="status"] {
-  color: var(--muted);
-  font-weight: normal;
-}
-
 input,
-textarea,
 select {
+  box-sizing: border-box;
   width: 100%;
   font: inherit;
-  color: var(--ink);
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 0.25rem;
-  padding: 0.4rem;
 }
 
 button {
@@ -83,30 +52,12 @@ button {
   color: var(--accent-ink);
   background: var(--accent);
   border: none;
-  border-radius: 0.25rem;
   padding: 0.4rem 0.9rem;
-  margin-top: 0.75rem;
-  cursor: pointer;
+  margin-top: 0.5rem;
 }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: wait;
-}
-
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 2px;
-}
-
-#theme-toggle {
-  margin-top: 0;
-  color: var(--ink);
-  background: transparent;
-  border: 1px solid var(--line);
+[role="status"] {
+  color: var(--muted);
 }
 
 .error {
@@ -120,61 +71,34 @@ select:focus-visible {
   gap: 0 1rem;
 }
 
-.control {
+.controls > div {
   flex: 1 1 12rem;
 }
 
 #ideas {
-  list-style: none;
   padding: 0;
+  list-style: none;
 }
 
-.idea {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 0.5rem;
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
+#ideas li {
+  border-bottom: 1px solid var(--line);
+  padding: 0.5rem 0;
 }
 
-.idea-text {
-  flex: 1 1 14rem;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.idea h3 {
+#ideas h3 {
   margin: 0;
-  font-size: 1.1rem;
 }
 
-.idea p {
-  margin: 0.25rem 0 0;
+#ideas p {
+  margin: 0.25rem 0;
 }
 
-.idea button {
-  margin-top: 0;
-}
-
-/* The leader: a thicker border and a text label, so it doesn't rely on colour. */
-.idea.top {
-  background: var(--top-bg);
-  border: 3px solid var(--top-line);
+/* The leader stands out by shape and by its "Top idea" text, not colour alone. */
+#ideas li.top {
+  border-left: 4px solid var(--accent);
+  padding-left: 0.75rem;
 }
 
 .top-label {
-  display: inline-block;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border: 1px solid var(--top-line);
-  border-radius: 999px;
-  padding: 0 0.5rem;
-  margin-bottom: 0.25rem;
+  font-weight: bold;
 }

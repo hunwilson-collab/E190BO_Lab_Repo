@@ -9,7 +9,6 @@ const sortMenu = document.querySelector("#sort");
 const voterBox = document.querySelector("#voter");
 const form = document.querySelector("#add-form");
 const titleBox = document.querySelector("#title");
-const bodyBox = document.querySelector("#body");
 const addButton = document.querySelector("#add-button");
 const addStatus = document.querySelector("#add-status");
 const themeToggle = document.querySelector("#theme-toggle");
@@ -113,29 +112,25 @@ function render() {
 
 function ideaItem(idea, isTop) {
   const li = document.createElement("li");
-  li.className = "idea";
   li.classList.toggle("top", isTop);
 
-  const text = document.createElement("div");
-  text.className = "idea-text";
   if (isTop) {
-    const label = document.createElement("span");
+    const label = document.createElement("p");
     label.className = "top-label";
     label.textContent = "Top idea";
-    text.append(label);
+    li.append(label);
   }
   const title = document.createElement("h3");
   title.textContent = idea.title;
-  text.append(title);
+  li.append(title);
   if (idea.body) {
     const body = document.createElement("p");
     body.textContent = idea.body;
-    text.append(body);
+    li.append(body);
   }
   const votes = document.createElement("p");
-  votes.className = "hint";
   votes.textContent = idea.vote_count === 1 ? "1 vote" : `${idea.vote_count} votes`;
-  text.append(votes);
+  li.append(votes);
 
   const button = document.createElement("button");
   button.type = "button";
@@ -145,9 +140,7 @@ function ideaItem(idea, isTop) {
   status.setAttribute("role", "status");
   status.className = "error";
   button.addEventListener("click", () => vote(idea, button, status));
-  text.append(status);
-
-  li.append(text, button);
+  li.append(button, status);
   return li;
 }
 
@@ -160,7 +153,6 @@ async function vote(idea, button, status) {
     voterBox.focus();
     return;
   }
-  remember("voter", voter);
   button.disabled = true;
   button.textContent = "Voting…";
   status.textContent = "";
@@ -178,18 +170,12 @@ async function vote(idea, button, status) {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();                  // stay on this page
-  const title = titleBox.value.trim();
-  if (!title) {
-    addStatus.className = "error";
-    addStatus.textContent = "Give your idea a title first.";
-    titleBox.focus();
-    return;
-  }
+  const title = titleBox.value;
   addButton.disabled = true;
   addStatus.className = "";
   addStatus.textContent = "Adding…";
   try {
-    await postJSON("/ideas", { title, body: bodyBox.value.trim() });
+    await postJSON("/ideas", { title });
     form.reset();                          // only on success: a failed add keeps the text
     addStatus.textContent = `Added “${title}”.`;
     await loadIdeas();
@@ -219,7 +205,6 @@ applyTheme(recall("theme") ?? (matchMedia("(prefers-color-scheme: dark)").matche
 
 // ── Start ─────────────────────────────────────────────────────────────────────
 
-voterBox.value = recall("voter") ?? "";
 searchBox.addEventListener("input", render);
 sortMenu.addEventListener("change", render);
 loadIdeas();
